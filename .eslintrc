@@ -1,0 +1,84 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "ENV": false
+  },
+  "extends": "airbnb",
+  "rules": {
+    "linebreak-style": 0,
+    "no-debugger": 0,
+    "no-alert": 0,
+    "no-console": 0,
+    "react/forbid-prop-types": 0,
+    "no-useless-return": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "no-useless-escape": 0,
+    "react/no-find-dom-node": 0,
+    "no-param-reassign": 0,
+    "max-len": 0,
+    "react/sort-comp": 0,
+    "indent": 0,
+    "quotes": 0,
+    "comma-dangle": [
+      "off"
+    ],
+    "no-unused-vars": [
+      "warn"
+    ],
+    "object-curly-spacing": [
+      "off"
+    ],
+    "padded-blocks": [
+      "off"
+    ],
+    "react/jsx-closing-bracket-location": [
+      "off"
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/jsx-space-before-closing": [
+      "off"
+    ],
+    "react/prefer-stateless-function": [
+      "off"
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true
+      }
+    ],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "components/",
+          "config/",
+          "containers/",
+          "locale",
+          "redux_flow/",
+          "static/",
+          "theme/",
+          "utils/"
+        ]
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "off"
+    ],
+    "import/extensions": "off",
+    "global-require": "off"
+  }
+}
