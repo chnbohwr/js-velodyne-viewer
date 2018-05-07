@@ -1,13 +1,8 @@
-# Simple React Start Kit 2017
+# THREE.js example for point cloud lidar map
 
-這個環境包可以讓你快速體驗 ReactJS 開發環境的便利，我們並沒有在裏面放入額外的套件(例如 redux, karma)，希望可以讓你用最簡單的環境開始學習 React
+source point cloud dataset: [here](http://www.cvlibs.net/datasets/kitti/raw_data.php)
 
-## 特色
-
-* [react 16.3.1](https://github.com/facebook/react)
-* [webpack 4](https://github.com/webpack/webpack)
-* [babel 6](https://github.com/babel/babel)
-* [eslint](http://eslint.org)
+[![image](https://user-images.githubusercontent.com/6761222/39681983-d6b165d8-51df-11e8-8a5e-038577220af4.png)](https://www.youtube.com/watch?v=LKR5vtDn6Pg)
 
 ## 需求配置
 * node `^6.11.5`
