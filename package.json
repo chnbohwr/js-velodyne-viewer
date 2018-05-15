@@ -20,6 +20,8 @@
     "d3": "^5.1.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0",
     "three": "^0.92.0",
     "three-orbitcontrols": "^2.0.0"
   },

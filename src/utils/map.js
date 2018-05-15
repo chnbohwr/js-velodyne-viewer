@@ -42,15 +42,11 @@ export const generateScene = () => {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-
-  // const k = new THREE.Mesh(new THREE.SphereGeometry(), new THREE.MeshBasicMaterial(0xffff00));
+  // target position
   // const box = new THREE.Box3();
-  // box.setFromCenterAndSize(new THREE.Vector3(5, -2, -2), new THREE.Vector3(2, 2, 3));
-  // const boxHelper = new THREE.BoxHelper(box, 0xffff00);
-  const box = new THREE.Box3();
-  box.setFromCenterAndSize(new THREE.Vector3(5, -1, -2.5), new THREE.Vector3(2, 2, 5));
-  const helper = new THREE.Box3Helper(box, 0xffff00);
-  scene.add(helper);
+  // box.setFromCenterAndSize(new THREE.Vector3(5, -1, -2.5), new THREE.Vector3(2, 2, 5));
+  // const helper = new THREE.Box3Helper(box, 0xffff00);
+  // scene.add(helper);
 
   const orbitControls = new Orbitcontrols(camera, renderer.domElement);
   const object = {
