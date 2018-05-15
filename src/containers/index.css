@@ -1,0 +1,17 @@
+html, body{
+  margin: 0;
+  padding: 0;
+}
+.buttons {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+}
+.googlemap{
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}

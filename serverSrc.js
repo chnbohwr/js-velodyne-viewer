@@ -4,34 +4,30 @@ const path = require('path');
 
 const chunkSize = 4;
 const folderPath = path.resolve('./drive_data/velodyne_points/data/');
+const folderGPSPath = path.resolve('./drive_data/oxts/data/');
 const filePaths = [];
+const gpsFilePaths = [];
 
 fs.readdirSync(folderPath).forEach((file) => {
   const fp = path.join(folderPath, file);
   filePaths.push(fp);
 });
+fs.readdirSync(folderGPSPath).forEach((file) => {
+  const fp = path.join(folderGPSPath, file);
+  gpsFilePaths.push(fp);
+});
 
-const sendPosition = filePath => new Promise((rs, rj) => {
+const sendPosition = (filePath, gpsPath) => new Promise((rs) => {
   console.log(`load file ${filePath}`);
   const readStream = fs.createReadStream(filePath);
   readStream.on('data', (fileBuffer) => {
-    // console.log(`send ${fileBuffer.length / chunkSize} positions`);
-    // const arr = [];
-    // for (let i = 0; i < fileBuffer.length - 1; i += chunkSize * 4) {
-    //   const z = fileBuffer.readFloatLE(i);
-    //   const x = fileBuffer.readFloatLE(i + chunkSize);
-    //   const y = fileBuffer.readFloatLE(i + (chunkSize * 2));
-    //   const w = ((x ** 2) + (y ** 2) + (z ** 2)) ** 0.5;
-    //   const vect = {
-    //     x, y, z, w,
-    //   };
-    //   arr.push(vect);
-    // }
-    // io.emit('position', arr);
     io.emit('position', fileBuffer);
   }).on('end', () => {
-    console.log('end');
-    io.emit('end');
+    console.time('readfileSync GPS text');
+    const gpsText = fs.readFileSync(gpsPath, 'utf8');
+    console.timeEnd('readfileSync GPS text');
+    io.emit('end', gpsText.split(' ', 2));
+    // io.emit('end');
     rs();
   });
 });
@@ -39,7 +35,7 @@ const sendPosition = filePath => new Promise((rs, rj) => {
 io.on('connection', (socket) => {
   socket.on('getPosition', (fileIndex) => {
     console.log('getPosition: ', fileIndex);
-    sendPosition(filePaths[fileIndex]);
+    sendPosition(filePaths[fileIndex], gpsFilePaths[fileIndex]);
   });
   console.log('connection success');
 });
