@@ -9,48 +9,54 @@ export default class Main extends Component {
     this.container = React.createRef();
     this.positions = [];
     this.socket = openSocket('http://localhost:6999');
-  }
-  state = {
-    loading: false,
-    fileIndex: 0,
+    this.fileIndex = 0;
+    this.geometry = util.generateGeometry();
   }
   componentDidMount() {
-    this.positions = [];
     const map = util.generateScene();
     this.container.current.appendChild(map.renderer.domElement);
     const animate = () => {
       requestAnimationFrame(animate);
       map.renderer.render(map.scene, map.camera);
     };
-    animate();
-    // this.socket.on('start', () => { this.setState({ loading: true }); });
-    this.socket.on('position', (positionArr) => {
-      this.positions = this.positions.concat(positionArr);
-    });
-    this.socket.on('end', () => {
-      this.setState({ loading: false });
+    const socketEnd = () => {
       if (this.lastPointCloud) {
-        console.log('remove point cloud');
         map.scene.remove(this.lastPointCloud);
       }
-      const data = this.positions;
-      this.positions = [];
-      console.log(data.length);
-      this.lastPointCloud = util.generatePointCloud(data);
+      this.lastPointCloud = util.generatePointCloud(this.geometry);
+      this.geometry.dispose();
+      this.geometry = util.generateGeometry();
       map.scene.add(this.lastPointCloud);
-      this.nextShot();
-    });
+      console.timeEnd('===hyman====');
+      if (!this.pause) {
+        this.nextShot();
+      }
+    };
+    const socketPosition = (positionArr) => {
+      const vectArray = util.transferArrayBufferToVect(positionArr);
+      util.pushDataToGeometry(this.geometry, vectArray);
+    };
+    animate();
+    // this.socket.on('start', () => { this.setState({ loading: true }); });
+    this.socket.on('position', socketPosition);
+    this.socket.on('end', socketEnd);
   }
   nextShot = () => {
-    let newIndex = this.state.fileIndex + 1;
+    console.time('===hyman====');
+    let newIndex = this.fileIndex + 1;
     if (newIndex > 153) { newIndex = 0; }
-    this.setState({ fileIndex: newIndex, loading: true });
+    this.pause = false;
+    this.fileIndex = newIndex;
     this.socket.emit('getPosition', newIndex);
+  }
+  togglePause = () => {
+    this.pause = true;
   }
   render() {
     return (
       <div>
-        <button disabled={this.state.loading} onClick={this.nextShot}>next shot</button>
+        <button onClick={this.nextShot}>play</button>
+        <button onClick={this.togglePause}>pause</button>
         <div ref={this.container} />
       </div>
     );

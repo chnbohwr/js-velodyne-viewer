@@ -2,15 +2,45 @@ import * as THREE from 'three';
 import * as d3 from 'd3';
 import Orbitcontrols from 'three-orbitcontrols';
 
-const color = d3.scaleLinear().domain([0, 50]).range([d3.rgb(0, 255, 0), d3.rgb(255, 0, 0)]);
+const chunkSize = 4;
 
-export const generatePointCloud = (data) => {
+const color = d3.scaleLinear().domain([0, 0.6]).range([d3.rgb(0, 255, 0), d3.rgb(255, 0, 0)]);
+const defaultColor = new THREE.Color('skyblue');
+
+export const transferArrayBufferToVect = (arrBuffer) => {
+  const floatArr = new Float32Array(arrBuffer);
+  const arr = [];
+  for (let i = 0; i < floatArr.length - 1; i += chunkSize) {
+    const z = floatArr[i];
+    const x = floatArr[i + 1];
+    const y = floatArr[i + 2];
+    // const w = ((x ** 2) + (y ** 2) + (z ** 2)) ** 0.5;
+    const vect = {
+      x, y, z,
+    };
+    arr.push(vect);
+  }
+  return arr;
+};
+
+export const generateGeometry = () => {
+  return new THREE.Geometry();
+};
+
+export const pushDataToGeometry = (geometry, data) => {
+  const vertices = data.map(d => new THREE.Vector3(d.x, d.y, d.z));
+  const colors = Array(data.length).fill(defaultColor);
+  geometry.vertices = geometry.vertices.concat(vertices);
+  geometry.colors = geometry.colors.concat(colors);
+  // data.forEach((d) => {
+  //   geometry.vertices.push(new THREE.Vector3(d.x, d.y, d.z));
+  //   geometry.colors.push(defaultColor);
+  // });
+};
+
+export const generatePointCloud = (geometry) => {
+  // console.log(data);
   const pointMaterial = new THREE.PointsMaterial({ size: 2, sizeAttenuation: false, vertexColors: THREE.VertexColors });
-  const geometry = new THREE.Geometry();
-  data.forEach((d) => {
-    geometry.vertices.push(new THREE.Vector3(d.x, d.y, d.z));
-    geometry.colors.push(new THREE.Color(color(d.w)));
-  });
   const pointCloud = new THREE.Points(geometry, pointMaterial);
   return pointCloud;
 };

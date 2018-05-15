@@ -15,19 +15,20 @@ const sendPosition = filePath => new Promise((rs, rj) => {
   console.log(`load file ${filePath}`);
   const readStream = fs.createReadStream(filePath);
   readStream.on('data', (fileBuffer) => {
-    console.log(`send ${fileBuffer.length / chunkSize} positions`);
-    const arr = [];
-    for (let i = 0; i < fileBuffer.length - 1; i += chunkSize * 4) {
-      const z = fileBuffer.readFloatLE(i);
-      const x = fileBuffer.readFloatLE(i + chunkSize);
-      const y = fileBuffer.readFloatLE(i + (chunkSize * 2));
-      const w = ((x ** 2) + (y ** 2) + (z ** 2)) ** 0.5;
-      const vect = {
-        x, y, z, w,
-      };
-      arr.push(vect);
-    }
-    io.emit('position', arr);
+    // console.log(`send ${fileBuffer.length / chunkSize} positions`);
+    // const arr = [];
+    // for (let i = 0; i < fileBuffer.length - 1; i += chunkSize * 4) {
+    //   const z = fileBuffer.readFloatLE(i);
+    //   const x = fileBuffer.readFloatLE(i + chunkSize);
+    //   const y = fileBuffer.readFloatLE(i + (chunkSize * 2));
+    //   const w = ((x ** 2) + (y ** 2) + (z ** 2)) ** 0.5;
+    //   const vect = {
+    //     x, y, z, w,
+    //   };
+    //   arr.push(vect);
+    // }
+    // io.emit('position', arr);
+    io.emit('position', fileBuffer);
   }).on('end', () => {
     console.log('end');
     io.emit('end');
